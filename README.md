@@ -1,4 +1,4 @@
-﻿# 🚀 Enterprise Multi-Tenant SaaS Platform on Amazon EKS
+# 🚀 Enterprise Multi-Tenant SaaS Platform on Amazon EKS
 
 <p align="center">
   <img src="https://img.shields.io/badge/AWS-EKS%20Auto%20Mode-orange?style=for-the-badge&logo=amazonaws" alt="AWS EKS">
@@ -13,108 +13,105 @@ A production-grade, enterprise-ready reference implementation for building, secu
 
 ## 📊 Enterprise Architecture Overview
 
-The following SVG diagram illustrates the hub-spoke control plane and data plane topology, separating core cluster management from tenant-isolated workloads:
+![Architecture Design](docs/images/architecture-design.svg)
 
-\\\svg
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 350" width="100%" height="100%">
-  <style>
-    .bg { fill: #0d1117; }
-    .box { fill: #161b22; stroke: #30363d; stroke-width: 2px; rx: 8px; }
-    .title { fill: #58a6ff; font-family: -apple-system, sans-serif; font-weight: bold; font-size: 14px; }
-    .text { fill: #c9d1d9; font-family: -apple-system, sans-serif; font-size: 12px; }
-    .arrow { stroke: #8b949e; stroke-width: 2px; fill: none; marker-end: url(#arrow); }
-  </style>
-  <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8b949e"/>
-    </marker>
-  </defs>
-  
-  <rect width="800" height="350" class="bg"/>
+The following diagram illustrates the hub-spoke control plane and data plane topology, separating core cluster management from tenant-isolated workloads:
 
-  <!-- Control Plane Hub -->
-  <rect x="50" y="50" width="220" height="250" class="box"/>
-  <text x="70" y="80" class="title">Control Plane Hub</text>
-  <text x="70" y="120" class="text">• Argo CD GitOps Engine</text>
-  <text x="70" y="150" class="text">• kro Controller Manager</text>
-  <text x="70" y="180" class="text">• ACK Controllers</text>
-  <text x="70" y="210" class="text">• Multi-Tenant Blueprints</text>
+```mermaid
+graph TD
+    subgraph Control Plane Hub
+        A[Argo CD GitOps Engine]
+        B[kro Controller Manager]
+        C[ACK Controllers]
+    end
 
-  <!-- Data Plane Spoke -->
-  <rect x="530" y="50" width="220" height="250" class="box"/>
-  <text x="550" y="80" class="title">Data Plane Spoke</text>
-  <text x="550" y="120" class="text">• Tenant-001 (Basic / Shared)</text>
-  <text x="550" y="150" class="text">• Tenant-002 (Basic / Shared)</text>
-  <text x="550" y="180" class="text">• Tenant-004 (Pro / Dedicated)</text>
-  <text x="550" y="210" class="text">• Karpenter NodePools</text>
+    subgraph Data Plane Spoke
+        D[Tenant-001 Basic / Shared]
+        E[Tenant-002 Basic / Shared]
+        F[Tenant-004 Pro / Dedicated]
+        G[Karpenter NodePools]
+    end
 
-  <!-- Connecting Arrow -->
-  <path d="M 270 175 L 510 175" class="arrow"/>
-  <text x="330" y="160" fill="#8b949e" font-family="sans-serif" font-size="10px">GitOps Sync & RGDs</text>
-</svg>
-\\\
-
----
+    A -->|GitOps Sync & RGDs| D
+    A -->|GitOps Sync & RGDs| E
+    A -->|GitOps Sync & RGDs| F
+```
 
 ## 📋 Prerequisites
-
-Before deploying or validating this repository, ensure your local workstation or build environment has the following tools installed and configured:
-
+Before deploying or validating this repository, ensure your local environment has the following tools installed and configured:
 * **AWS CLI** (v2.x configured with appropriate IAM credentials and administrative permissions)
 * **kubectl** (v1.30+) for interacting with Amazon EKS control and data plane clusters
 * **Git** for repository management and version control
 * **Terraform** (v1.5+) for infrastructure provisioning
 * **Helm** (v3.x) for chart dependency management
 
----
-
-## 🏗️ Lab Architecture & Visual Reference (lab4.docx)
+### 🏗️ Lab Architecture & Visual Reference 
 
 | Module / Topic | Technical Component | Lab Screenshot Reference & Key Highlights |
 | :--- | :--- | :--- |
-| **1. Hub-Spoke Foundation** | Control Plane Hub & Data Plane Spoke | **Argo CD Dashboard (Image 61)**: Highlights Healthy state, Synced status against main, and active tenant topology trees (	enant-001, 	enant-002, 	enant-003) alongside cluster network policies. |
-| **2. Blueprint Orchestration** | kro ResourceGraphDefinitions (RGDs) | **VS Code Explorer (Image 69)**: Demonstrates the modular structure of saas-workloads/examples/kro/ and terminal commands copying manifests into active deployment paths. |
-| **3. Cost Attribution** | EKS Split Cost Allocation & QuickSight | **QuickSight Dashboard (Image 10)**: Tracks total split cost (.21), cluster-level compute distribution, and per-namespace expense mapping (	enant-004, 	enant-002, 	enant-001). |
+| **1. Hub-Spoke Foundation** | Control Plane Hub & Data Plane Spoke | **Argo CD Dashboard**:  ![Argo CD Dashboard](docs/images/image61.png) |
+| **2. Blueprint Orchestration** | kro ResourceGraphDefinitions (RGDs) | **VS Code Explorer**: ![VS Code Explorer](docs/images/image69.png) |
+| **3. Cost Attribution** | EKS Split Cost Allocation & QuickSight | **QuickSight Dashboard**: ![QuickSight Dashboard](docs/images/image10.png) |
 
----
+### ⚙️ Step-by-Step Execution Instructions
 
-## 🚀 Quick Start & Verification
-
-### 1. Verify Cluster Contexts
-Ensure your local kubectl is configured to target the data plane cluster:
-\\\ash
+### Phase 1: Environment Setup & Cluster Context Verification
+1. **Verify AWS Identity & Configuration:**
+```Bash
+aws sts get-caller-identity
+```
+2. **Configure Cluster Context**  
+Target your data plane cluster to execute workload configurations:
+```Bash
 kubectl config use-context data-plane
 kubectl config get-contexts
-\\\
+```
 
-### 2. Test Runtime Guardrails (PSA Baseline)
-Verify that Pod Security Admission strictly rejects privileged container configurations at admission time:
-\\\ash
+### Phase 2: Provision Tenant Workloads via kro
+1. **Inspect Available Tenant Blueprints:**  
+Navigate into the workload templates directory:
+```Bash
+cd ~/environment/saas-workloads/examples/kro/
+```
+2. **Provision Tenant Workloads:**  
+Copy example tenant manifests into your active deployment path to trigger automated GitOps reconciliation:
+```Bash
+cp ~/environment/saas-workloads/examples/kro/tenant-basic-01.yaml ~/environment/saas-workloads/tenants/
+cp ~/environment/saas-workloads/examples/kro/tenant-basic-02.yaml ~/environment/saas-workloads/tenants/
+cp ~/environment/saas-workloads/examples/kro/tenant-basic-03.yaml ~/environment/saas-workloads/tenants/
+ ```
+3. **Verify GitOps Reconciliation:**
+```Bash
+Confirm that Argo CD and kro have successfully provisioned the tenant namespaces and resources:
+kubectl get tenants -A
+kubectl get pods -n tenant-001
+```
+
+### Phase 3: Validating Security Guardrails
+1. **Test Pod Security Admission (PSA Baseline):**  
+Verify that the cluster strictly rejects unauthorized privileged container configurations at admission time:
+```Bash
 kubectl apply -f saas-workloads/examples/security/privileged-pod.yaml -n tenant-001
-\\\
-*Expected Output:* pods "privileged-demo" is forbidden: violates PodSecurity "baseline:latest": privileged...
-
----
+```
+*Expected Output:  `pods "privileged-demo" is forbidden: violates PodSecurity "baseline:latest": privileged...`*
 
 ## 🧹 Cleanup Instructions
+To completely tear down the environment and avoid ongoing cloud costs, execute the following sequence:
 
-To completely tear down the environment, delete all provisioned cloud infrastructure, and avoid ongoing AWS charges, execute the following clean-up sequence:
+1. **Delete Active Tenant Workloads:**
+```Bash
+kubectl delete -f saas-workloads/tenants/ --ignore-not-found=true
+```
 
-1. **Delete Tenant Workloads via GitOps / kubectl:**
-   \\\ash
-   kubectl delete -f saas-workloads/tenants/ --ignore-not-found=true
-   \\\
+2. **Destroy Provisioned Infrastructure via Terraform:**
+```Bash
+cd terraform/
+terraform destroy -auto-approve
+```
 
-2. **Destroy Infrastructure via Terraform:**
-   Navigate to your terraform workspace directory and destroy the provisioned stacks:
-   \\\ash
-   cd terraform/
-   terraform destroy -auto-approve
-   \\\
-
-3. **Purge Argo CD Applications:**
+3. **Purge Argo CD Applications:**  
    Remove any remaining custom resource definitions and application sync controllers from the control plane hub cluster.
-
+  
 ---
 
 ## 🔗 References & External Web Links
