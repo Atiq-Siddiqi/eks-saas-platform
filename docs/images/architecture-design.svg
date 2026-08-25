@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#232F3E" />
+      <stop offset="100%" stop-color="#131A22" />
+    </linearGradient>
+    
+    <!-- Card Gradient -->
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2A3748" />
+      <stop offset="100%" stop-color="#1E2836" />
+    </linearGradient>
+
+    <!-- Drop Shadow Filter -->
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.5" />
+    </filter>
+  </defs>
+
+  <!-- Canvas Background -->
+  <rect width="1000" height="620" fill="url(#bgGrad)" />
+
+  <!-- Header Title -->
+  <text x="50" y="50" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="bold" fill="#FFFFFF">
+    Building SaaS Applications on Amazon EKS with EKS Capabilities
+  </text>
+  <text x="50" y="75" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#9CDCFE">
+    Hub-Spoke Architecture • Argo CD GitOps • kro ResourceGraphDefinitions • EKS Auto Mode
+  </text>
+
+  <!-- AWS Orange Accent Divider -->
+  <rect x="50" y="90" width="900" height="3" fill="#FF9900" rx="1.5" />
+
+  <!-- 1. GitOps Repository Source Card -->
+  <g transform="translate(50, 120)" filter="url(#shadow)">
+    <rect width="270" height="185" rx="8" fill="url(#cardGrad)" stroke="#1D8102" stroke-width="1.5" />
+    <!-- AWS Green Circle Icon -->
+    <circle cx="30" cy="30" r="14" fill="#1D8102" />
+    <text x="30" y="35" font-family="sans-serif" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle">GIT</text>
+    <text x="55" y="27" font-family="sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">AWS CodeCommit</text>
+    <text x="55" y="43" font-family="sans-serif" font-size="11" fill="#AAB7B8">GitOps Source Repositories</text>
+    
+    <text x="20" y="75" font-family="sans-serif" font-size="11" fill="#D5DBDB">• saas-platform-configs (RGDs)</text>
+    <text x="20" y="100" font-family="sans-serif" font-size="11" fill="#D5DBDB">• saas-workloads (Tenant CRs)</text>
+    <text x="20" y="125" font-family="sans-serif" font-size="11" fill="#D5DBDB">• saas-gaming-app (Source Code)</text>
+    <text x="20" y="155" font-family="sans-serif" font-size="11" font-weight="bold" fill="#FF9900">Single Git Commit Onboarding</text>
+  </g>
+
+  <!-- 2. Control Plane Hub Card -->
+  <g transform="translate(350, 120)" filter="url(#shadow)">
+    <rect width="280" height="185" rx="8" fill="url(#cardGrad)" stroke="#FF9900" stroke-width="1.5" />
+    <!-- AWS Orange Circle Icon -->
+    <circle cx="30" cy="30" r="14" fill="#FF9900" />
+    <text x="30" y="35" font-family="sans-serif" font-size="11" font-weight="bold" fill="#131A22" text-anchor="middle">HUB</text>
+    <text x="55" y="27" font-family="sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">Control Plane Cluster</text>
+    <text x="55" y="43" font-family="sans-serif" font-size="11" fill="#AAB7B8">saas-control-plane (EKS Auto Mode)</text>
+
+    <rect x="18" y="70" width="115" height="24" rx="4" fill="#131A22" />
+    <text x="75" y="86" font-family="sans-serif" font-size="10" fill="#FF9900" text-anchor="middle">Argo CD Capability</text>
+
+    <rect x="143" y="70" width="115" height="24" rx="4" fill="#131A22" />
+    <text x="200" y="86" font-family="sans-serif" font-size="10" fill="#0073BB" text-anchor="middle">kro RGD Blueprints</text>
+
+    <text x="20" y="125" font-family="sans-serif" font-size="11" fill="#D5DBDB">• Orchestrates fleet application syncs</text>
+    <text x="20" y="145" font-family="sans-serif" font-size="11" fill="#D5DBDB">• Vends ResourceGraphDefinitions</text>
+    <text x="20" y="165" font-family="sans-serif" font-size="11" fill="#D5DBDB">• Managed AWS Service-Owned Account</text>
+  </g>
+
+  <!-- 3. Data Plane Spoke Card -->
+  <g transform="translate(660, 120)" filter="url(#shadow)">
+    <rect width="290" height="470" rx="8" fill="url(#cardGrad)" stroke="#0073BB" stroke-width="1.5" />
+    <!-- AWS Blue Circle Icon -->
+    <circle cx="30" cy="30" r="14" fill="#0073BB" />
+    <text x="30" y="35" font-family="sans-serif" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle">SPOKE</text>
+    <text x="55" y="27" font-family="sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">Data Plane Cluster</text>
+    <text x="55" y="43" font-family="sans-serif" font-size="11" fill="#AAB7B8">saas-data-plane (EKS Auto Mode)</text>
+
+    <!-- Basic Tier Section -->
+    <rect x="15" y="65" width="260" height="175" rx="6" fill="#131A22" stroke="#232F3E" stroke-width="1" />
+    <text x="28" y="90" font-family="sans-serif" font-size="12" font-weight="bold" fill="#FF9900">Basic Tier Tenants (Pool Model)</text>
+    <text x="28" y="115" font-family="sans-serif" font-size="11" fill="#D5DBDB">• Shared S3 Bucket &amp; DynamoDB Table</text>
+    <text x="28" y="135" font-family="sans-serif" font-size="11" fill="#D5DBDB">• IAM Prefix &amp; LeadingKeys Isolation</text>
+    <text x="28" y="155" font-family="sans-serif" font-size="11" fill="#D5DBDB">• Shared Basic Karpenter NodePool</text>
+    <text x="28" y="175" font-family="sans-serif" font-size="11" fill="#D5DBDB">• AI Host: Amazon Nova Micro</text>
+    <text x="28" y="195" font-family="sans-serif" font-size="10" fill="#9CDCFE">  (Fast, low-cost baseline responses)</text>
+
+    <!-- Pro Tier Section -->
+    <rect x="15" y="255" width="260" height="195" rx="6" fill="#131A22" stroke="#232F3E" stroke-width="1" />
+    <text x="28" y="280" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0073BB">Pro Tier Tenant 004 (Silo Model)</text>
+    <text x="28" y="305" font-family="sans-serif" font-size="11" fill="#D5DBDB">• Dedicated S3 Bucket &amp; DynamoDB Table</text>
+    <text x="28" y="325" font-family="sans-serif" font-size="11" fill="#D5DBDB">• Dedicated Karpenter NodePool (Taint)</text>
+    <text x="28" y="345" font-family="sans-serif" font-size="11" fill="#D5DBDB">• Horizontal Pod Autoscaling (HPA: 3-10)</text>
+    <text x="28" y="365" font-family="sans-serif" font-size="11" fill="#D5DBDB">• AI Host: Amazon Nova Lite</text>
+    <text x="28" y="385" font-family="sans-serif" font-size="10" fill="#9CDCFE">  (Advanced reasoning, rich clues)</text>
+    <text x="28" y="420" font-family="sans-serif" font-size="10" font-weight="bold" fill="#1D8102">✓ ACK &amp; EKS Pod Identity Enforced</text>
+  </g>
+
+  <!-- 4. Security & Isolation Controls Card -->
+  <g transform="translate(50, 330)" filter="url(#shadow)">
+    <rect width="580" height="260" rx="8" fill="url(#cardGrad)" stroke="#0073BB" stroke-width="1.5" />
+    <text x="25" y="30" font-family="sans-serif" font-size="15" font-weight="bold" fill="#FFFFFF">Multi-Layer Tenant Isolation &amp; Cost Visibility</text>
+    
+    <!-- Left Column: Security Planes -->
+    <text x="25" y="60" font-family="sans-serif" font-size="12" font-weight="bold" fill="#FF9900">🔒 Four Isolation Planes:</text>
+    <text x="35" y="85" font-family="sans-serif" font-size="11" fill="#D5DBDB"><tspan fill="#9CDCFE">1. Compute:</tspan> Shared Basic NodePool vs. Dedicated Pro Silos with Taints</text>
+    <text x="35" y="110" font-family="sans-serif" font-size="11" fill="#D5DBDB"><tspan fill="#9CDCFE">2. Network:</tspan> ClusterNetworkPolicy (Ingress Deny) &amp; ApplicationNetworkPolicy (DNS Egress)</text>
+    <text x="35" y="135" font-family="sans-serif" font-size="11" fill="#D5DBDB"><tspan fill="#9CDCFE">3. Identity:</tspan> EKS Pod Identity mapping scoped IAM roles &amp; LeadingKeys</text>
+    <text x="35" y="160" font-family="sans-serif" font-size="11" fill="#D5DBDB"><tspan fill="#9CDCFE">4. Runtime:</tspan> Pod Security Standards (PSA Baseline) &amp; ResourceQuotas / Limits</text>
+
+    <!-- Right Column: Cost Allocation -->
+    <text x="25" y="200" font-family="sans-serif" font-size="12" font-weight="bold" fill="#FF9900">📊 Tenant Cost Attribution &amp; Unit Economics:</text>
+    <text x="35" y="225" font-family="sans-serif" font-size="11" fill="#D5DBDB">• EKS Split Cost Allocation + AWS CUR 2.0 (Data Exports)</text>
+    <text x="35" y="245" font-family="sans-serif" font-size="11" fill="#D5DBDB">• Integrated Athena Views &amp; Amazon QuickSight Dashboards</text>
+  </g>
+
+  <!-- Connecting Arrows / Flow lines -->
+  <!-- Git -> Control Plane -->
+  <path d="M 320 212 L 350 212" stroke="#FF9900" stroke-width="2.5" fill="none" marker-end="url(#arrow)" />
+  <!-- Control Plane -> Data Plane -->
+  <path d="M 630 212 L 660 212" stroke="#0073BB" stroke-width="2.5" fill="none" />
+</svg>
