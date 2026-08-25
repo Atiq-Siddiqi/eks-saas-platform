@@ -37,6 +37,8 @@ graph TD
     A -->|GitOps Sync & RGDs| F
 ```
 
+---
+
 ## 📋 Prerequisites
 Before deploying or validating this repository, ensure your local environment has the following tools installed and configured:
 * **AWS CLI** (v2.x configured with appropriate IAM credentials and administrative permissions)
@@ -45,6 +47,8 @@ Before deploying or validating this repository, ensure your local environment ha
 * **Terraform** (v1.5+) for infrastructure provisioning
 * **Helm** (v3.x) for chart dependency management
 
+---
+
 ### 🏗️ Lab Architecture & Visual Reference 
 
 | Module / Topic | Technical Component | Lab Screenshot Reference & Key Highlights |
@@ -52,6 +56,8 @@ Before deploying or validating this repository, ensure your local environment ha
 | **1. Hub-Spoke Foundation** | Control Plane Hub & Data Plane Spoke | **Argo CD Dashboard**:  ![Argo CD Dashboard](docs/images/image61.png) |
 | **2. Blueprint Orchestration** | kro ResourceGraphDefinitions (RGDs) | **VS Code Explorer**: ![VS Code Explorer](docs/images/image69.png) |
 | **3. Cost Attribution** | EKS Split Cost Allocation & QuickSight | **QuickSight Dashboard**: ![QuickSight Dashboard](docs/images/image10.png) |
+
+---
 
 ### ⚙️ Step-by-Step Execution Instructions
 
@@ -80,9 +86,9 @@ cp ~/environment/saas-workloads/examples/kro/tenant-basic-01.yaml ~/environment/
 cp ~/environment/saas-workloads/examples/kro/tenant-basic-02.yaml ~/environment/saas-workloads/tenants/
 cp ~/environment/saas-workloads/examples/kro/tenant-basic-03.yaml ~/environment/saas-workloads/tenants/
  ```
-3. **Verify GitOps Reconciliation:**
+3. **Verify GitOps Reconciliation:**  
+   Confirm that Argo CD and kro have successfully provisioned the tenant namespaces and resources:
 ```Bash
-Confirm that Argo CD and kro have successfully provisioned the tenant namespaces and resources:
 kubectl get tenants -A
 kubectl get pods -n tenant-001
 ```
@@ -94,6 +100,8 @@ Verify that the cluster strictly rejects unauthorized privileged container confi
 kubectl apply -f saas-workloads/examples/security/privileged-pod.yaml -n tenant-001
 ```
 *Expected Output:  `pods "privileged-demo" is forbidden: violates PodSecurity "baseline:latest": privileged...`*
+
+---
 
 ## 🧹 Cleanup Instructions
 To completely tear down the environment and avoid ongoing cloud costs, execute the following sequence:
