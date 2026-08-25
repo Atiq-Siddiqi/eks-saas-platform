@@ -36,7 +36,15 @@ graph TD
     A -->|GitOps Sync & RGDs| E
     A -->|GitOps Sync & RGDs| F
 ```
+---
 
+## 🔐 Architecture & Identity Flow
+
+The platform implements strict multi-tenant isolation and secure identity propagation across the hub-spoke clusters:
+
+* **Authentication & Access Control**: Administrative and user access is secured via AWS IAM Identity Center integration, mapping roles directly to Kubernetes RBAC groups within both clusters.
+* **IRSA (IAM Roles for Service Accounts)**: Workloads assume scoped AWS IAM roles securely without storing long-term credentials inside pods, enforcing least-privilege boundaries for S3 and DynamoDB.
+* **GitOps Sync Flow**: The Control Plane Hub (running Argo CD and `kro`) securely communicates with AWS CodeCommit repositories to reconcile and vend custom ResourceGraphDefinitions (RGDs) down to the Data Plane Spoke.
 ---
 
 ## 📋 Prerequisites
